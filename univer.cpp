@@ -1,34 +1,28 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <string>
 
 using namespace std;
  
-struct dlList
-{
- 
-	dlList *prev;
-        char c;
-        dlList *next;
- 
-} *start, *last;
- 
-void readFile(const char *name); 
-bool check_list(void); 
-void print_list(void); 
+void readFile(const char *name,string institute);  
+void print_list(string line); 
 
 int main()
-{	
-	start = NULL;
+{
+	setlocale (LC_ALL, "RUS");
+	string institute;
 	const char *name = "company list.txt"; 
-	readFile(name);
+	cout << "Ввести назание института,который нужно выделить" << "\n" << "Institute of ";
+	cin >> institute;
+	readFile(name, institute);
 	return 0;
 }
  
-void readFile(const char *name)
+void readFile(const char *name, string institute)
 {
-	char ch = ' ';
-	dlList *p, *p1;
+	string ch;
+	string line;
 	ifstream in(name); 
 	if(!in) 
     {
@@ -36,80 +30,19 @@ void readFile(const char *name)
 	}
     while(in)
 	{
-		while(ch != '\n' && !in.eof())
+		while(std::getline(in,line))
 		{
-      		in.get(ch); 
-			if(ch >= 65 && ch <=90 || ch >= 97 && ch <= 122)
- 
-			{
-				if(ch >= 65 && ch <= 90)
-				   ch = ch - 'A' + 'a';
-				if(start == NULL)
-				{
-					start = new dlList;
-					start -> c = ch;
-					start -> next = NULL;
-					start -> prev = NULL;
-					last = start;
-				}
-				else  
-				{ 
-					p = new dlList;
-					p -> c = ch;
-					p -> next = NULL;
-					p -> prev = last;
-					last -> next = p;
-					last = p; 
-				}
-			}
+				if ( line.find(institute) != std::string::npos ) print_list(line);
 		}
- 
-		if(check_list())	print_list();
-		p = start;
-		while(p != NULL)
-		{
-			p1 = p -> next;
-			delete p;
-			p = p1;
-		}
-		start = NULL;
-		last = NULL;
-		ch = ' ';
 	}
 	in.close();
 }
 
-bool check_list(void)
+void print_list(string line)
 {
-	dlList *start1, *last1;
-	start1 = start; 
-	last1 = last;
-	while (start1 != last1)
-	{
-		if ( (start1 -> c) != (last1 -> c) ) break;
-		else
-		{
-			start1 = start1 -> next;
-			last1 = last1 -> prev;
-		}	
-	}
-	if (start1 == last1) return true;
-	else 
-		return false;
- 
-}
-
-void print_list(void)
-{
-
-	dlList *p;
-    ofstream f("C:\\Users\\Tatiana\\Documents\\Visual Studio 2012\\Projects\\Univer\\Univer\\univer.txt", ios::out);
-	p = start;
-	while(p != NULL)
-	{ 
-		f << p -> c;
-		cout << p -> c;
-		p = p -> next;
-	}
+	ofstream f("C:\\Users\\Tatiana\\Documents\\Visual Studio 2012\\Projects\\Univer\\Univer\\univer.txt", ios::app);
+	f << line << "\n";
+	//cout << line << endl;
 	f.close();
 }
+
