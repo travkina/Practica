@@ -2,27 +2,27 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
+#include <regex>
 
 using namespace std;
  
-void readFile(const char *name,string institute);  
+void readFile(const char *name);  
 void print_list(string line); 
+//bool checkMail(string line);
 
 int main()
 {
 	setlocale (LC_ALL, "RUS");
 	string institute;
 	const char *name = "company list.txt"; 
-	cout << "Ввести назание института,который нужно выделить" << "\n" << "Institute of ";
-	cin >> institute;
-	readFile(name, institute);
+	readFile(name);
 	return 0;
 }
  
-void readFile(const char *name, string institute)
+void readFile(const char *name)
 {
-	string ch;
 	string line;
+	string::iterator it;
 	ifstream in(name); 
 	if(!in) 
     {
@@ -30,9 +30,16 @@ void readFile(const char *name, string institute)
 	}
     while(in)
 	{
-		while(std::getline(in,line))
+		while(getline(in,line))
 		{
-				if ( line.find(institute) != std::string::npos ) print_list(line);
+			std::tr1::regex rx("Acad.");
+            std::string replacement = "Academy";
+            std::string line = std::tr1::regex_replace(line, rx, replacement);
+			for (it = line.begin(); it != line.end(); it++)
+			{
+			  if ((*it) == ',') it = line.erase (it);
+			}
+			print_list(line);
 		}
 	}
 	in.close();
@@ -40,9 +47,7 @@ void readFile(const char *name, string institute)
 
 void print_list(string line)
 {
-	ofstream f("C:\\Users\\Tatiana\\Documents\\Visual Studio 2012\\Projects\\Univer\\Univer\\univer.txt", ios::app);
+	ofstream f("C:\\Users\\Tatiana\\Documents\\Visual Studio 2012\\Projects\\Univer\\Univer\\new company list.txt", ios::app);
 	f << line << "\n";
-	//cout << line << endl;
 	f.close();
 }
-
