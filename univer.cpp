@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <string>
 #include <regex>
+#include <map>
 
 using namespace std;
  
@@ -21,12 +22,32 @@ int main()
  
 void readFile(const char *name)
 {
-	string line, replacement;
+	string line, foun, replacement;
 	std::tr1::regex rx;
-	string rep[]={"Academy", "Institute", "Sciences", "USSR", "Semiconductor", "Physics", "Russian Academy Medical Scienses", "Medical", "Novosibirsk ", "Russia ", "", "", "", "", ""};//
-	string reg[]={"Acad.", "Inst.", "Sci.", "U.S.S.R.", "Semicond.", "Phys.", "RAMS", "Med.","Novosibirsk.", "Russia.", "and", "of", "the", "all", "for"};
+	map <string,string> changeMap;
+	changeMap.insert (std::pair<string, string>("Acad.", "Academy"));
+	changeMap.insert (std::pair<string, string>("Inst.", "Institute"));
+	changeMap.insert (std::pair<string, string>("Sci.", "Sciences"));
+	changeMap.insert (std::pair<string, string>("U.S.S.R.", "Russia "));
+	changeMap.insert (std::pair<string, string>("USSR", "Russia "));
+	changeMap.insert (std::pair<string, string>("Semicond.", "Semiconductor"));
+	changeMap.insert (std::pair<string, string>("Phys.", "Physics"));
+	changeMap.insert (std::pair<string, string>("RAMS", "Russian Academy Medical Scienses"));
+	changeMap.insert (std::pair<string, string>("RAS", "Russian Academy Sciences"));
+	changeMap.insert (std::pair<string, string>("Med.","Medical"));
+	changeMap.insert (std::pair<string, string>("Novosibirsk.", "Novosibirsk "));
+	changeMap.insert (std::pair<string, string>("Russia.", "Russia "));
+	changeMap.insert (std::pair<string, string>("and ", ""));
+	changeMap.insert (std::pair<string, string>("of ", ""));
+	changeMap.insert (std::pair<string, string>("the ", ""));
+	changeMap.insert (std::pair<string, string>("all ", ""));
+	changeMap.insert (std::pair<string, string>("for ", ""));
+	changeMap.insert (std::pair<string, string>("at ", ""));
+	changeMap.insert (std::pair<string, string>("in ", ""));
 	string::iterator it;
-	int i;
+	map<string, string>::iterator iter;
+	std::size_t found;
+	int i,j;
 	ifstream in(name); 
 	if(!in) 
     {
@@ -36,12 +57,15 @@ void readFile(const char *name)
 	{
 		while(getline(in,line))
 		{
-			for(i=0; i<15; i++)
+			
+			for (iter = changeMap.begin(); iter != changeMap.end(); ++iter)
 			{
-				rx = reg[i];
-				replacement = rep[i];
-                line = regex_replace(line, rx, replacement);
-			}			
+				while(line.find(iter->first) != std::string::npos)
+				{ 
+					line.replace(line.find(iter->first),iter->first.length(), iter->second);	
+				}
+			}
+			
 			for (it = line.begin(); it != line.end(); it++)
 			{
 			  if ((*it) == '-') it = line.erase (it);
