@@ -14,7 +14,6 @@ void print_list(string line);
 int main()
 {
 	setlocale (LC_ALL, "RUS");
-	string institute;
 	const char *name = "company list.txt"; 
 	readFile(name);
 	return 0;
@@ -30,13 +29,13 @@ void readFile(const char *name)
 	changeMap.insert (std::pair<string, string>("Sci.", "Sciences"));
 	changeMap.insert (std::pair<string, string>("U.S.S.R.", "Russia "));
 	changeMap.insert (std::pair<string, string>("USSR", "Russia "));
+	changeMap.insert (std::pair<string, string>("Novosibirsk.", "Novosibirsk "));
+	changeMap.insert (std::pair<string, string>("Russia.", "Russia "));
 	changeMap.insert (std::pair<string, string>("Semicond.", "Semiconductor"));
 	changeMap.insert (std::pair<string, string>("Phys.", "Physics"));
 	changeMap.insert (std::pair<string, string>("RAMS", "Russian Academy Medical Scienses"));
 	changeMap.insert (std::pair<string, string>("RAS", "Russian Academy Sciences"));
 	changeMap.insert (std::pair<string, string>("Med.","Medical"));
-	changeMap.insert (std::pair<string, string>("Novosibirsk.", "Novosibirsk "));
-	changeMap.insert (std::pair<string, string>("Russia.", "Russia "));
 	changeMap.insert (std::pair<string, string>(" and", ""));
 	changeMap.insert (std::pair<string, string>(" of", ""));
 	changeMap.insert (std::pair<string, string>(" the", ""));
@@ -44,8 +43,6 @@ void readFile(const char *name)
 	changeMap.insert (std::pair<string, string>(" for", ""));
 	changeMap.insert (std::pair<string, string>(" at", ""));
 	changeMap.insert (std::pair<string, string>(" in", ""));
-	changeMap.insert (std::pair<string, string>(" a", ""));
-	changeMap.insert (std::pair<string, string>(" a", ""));
 	changeMap.insert (std::pair<string, string>("sch ", "sh"));
 	changeMap.insert (std::pair<string, string>("ph", "f"));
 	changeMap.insert (std::pair<string, string>("z", "s"));
